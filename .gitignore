@@ -1,0 +1,8 @@
+.env
+results/
+__pycache__/
+*.pyc
+.DS_Store
+multi_agent/instances/
+# 106 MB — ships as a GitHub Release asset, see README
+multi_agent/coral-server.jar

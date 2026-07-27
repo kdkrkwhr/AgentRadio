@@ -1,0 +1,22 @@
+edition = 3
+
+[agent]
+name = "swe-atlas-agent"
+version = "0.1.0"
+description = "SWE Atlas QnA multi-agent peer for deep codebase comprehension"
+
+readme = "Claude Code agent for SWE Atlas multi-agent collaboration via Coral"
+summary = "4 peer agents collaborate to answer codebase questions"
+
+[agent.license]
+type = "spdx"
+expression = "MIT"
+
+[options.auto_launch]
+type = "string"
+default = "true"
+
+[runtimes.executable]
+path = "bash"
+arguments = ["startup.sh"]
+transport = "streamable_http"

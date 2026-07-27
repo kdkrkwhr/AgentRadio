@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""Get a valid Claude API token from your Claude Code subscription.
+
+Reads OAuth credentials from Forge or Claude Code, auto-refreshes if expired,
+and prints a valid access token to stdout.
+
+Usage:
+  claude-token                  # print token
+  eval $(claude-token --export) # export as env vars
+  claude-token --check          # show token status
+
+Works with any tool that accepts Anthropic API tokens — just set:
+  export ANTHROPIC_API_KEY=$(claude-token)
+"""
+
+import json
+import sys
+import time
+import urllib.request
+from pathlib import Path
+
+CLIENT_ID = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
+USER_AGENT = "claude-cli/2.1.87 (external, cli)"
+
+TOKEN_ENDPOINTS = [
+    "https://platform.claude.com/v1/oauth/token",
+    "https://console.anthropic.com/v1/oauth/token",
+]
+
+# Credential sources (checked in order)
+CLAUDE_CREDS = Path.home() / ".claude" / ".credentials.json"
+FORGE_CREDS = Path.home() / "forge" / ".credentials.json"
+
+
+def load_credentials():
+    """Load OAuth credentials from available sources."""
+
+    # 1. Claude Code credentials (~/.claude/.credentials.json)
+    if CLAUDE_CREDS.exists():
+        try:
+            data = json.loads(CLAUDE_CREDS.read_text())
+            oauth = data.get("claudeAiOauth", {})
+            if oauth.get("accessToken"):
+                return {
+                    "accessToken": oauth["accessToken"],
+                    "refreshToken": oauth.get("refreshToken", ""),
+                    "expiresAt": oauth.get("expiresAt", 0),
+                    "source": str(CLAUDE_CREDS),
+                }
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    # 2. Forge credentials (~/forge/.credentials.json)
+    if FORGE_CREDS.exists():
+        try:
+            data = json.loads(FORGE_CREDS.read_text())
+            for entry in data if isinstance(data, list) else []:
+                if entry.get("id") == "claude_code":
+                    tokens = entry.get("auth_details", {}).get("o_auth", {}).get("tokens", {})
+                    if tokens.get("access_token"):
+                        expires_at = tokens.get("expires_at", "")
+                        expires_ms = 0
+                        if expires_at:
+                            from datetime import datetime, timezone
+                            try:
+                                dt = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+                                expires_ms = int(dt.timestamp() * 1000)
+                            except (ValueError, TypeError):
+                                pass
+                        return {
+                            "accessToken": tokens["access_token"],
+                            "refreshToken": tokens.get("refresh_token", ""),
+                            "expiresAt": expires_ms,
+                            "source": str(FORGE_CREDS),
+                        }
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    return None
+
+
+def is_expired(creds):
+    """Check if token is expired (with 60s buffer)."""
+    expires_at = creds.get("expiresAt", 0)
+    if not expires_at:
+        return False
+    now_ms = int(time.time() * 1000)
+    return now_ms >= (expires_at - 60_000)
+
+
+def refresh_token(creds):
+    """Refresh expired token and save new credentials."""
+    refresh_tok = creds.get("refreshToken", "")
+    if not refresh_tok:
+        return None
+
+    payload = json.dumps({
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_tok,
+        "client_id": CLIENT_ID,
+    }).encode()
+
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": USER_AGENT,
+    }
+
+    for endpoint in TOKEN_ENDPOINTS:
+        req = urllib.request.Request(endpoint, data=payload, headers=headers, method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                result = json.loads(resp.read().decode())
+                new_access = result.get("access_token", "")
+                new_refresh = result.get("refresh_token", refresh_tok)
+                expires_in = result.get("expires_in", 3600)
+
+                if new_access:
+                    new_expires_ms = int(time.time() * 1000) + (expires_in * 1000)
+                    save_credentials(new_access, new_refresh, new_expires_ms)
+                    return new_access
+        except Exception:
+            continue
+
+    return None
+
+
+def save_credentials(access_token, refresh_token, expires_ms):
+    """Save refreshed credentials to ~/.claude/.credentials.json."""
+    CLAUDE_CREDS.parent.mkdir(parents=True, exist_ok=True)
+
+    data = {}
+    if CLAUDE_CREDS.exists():
+        try:
+            data = json.loads(CLAUDE_CREDS.read_text())
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    data["claudeAiOauth"] = {
+        "accessToken": access_token,
+        "refreshToken": refresh_token,
+        "expiresAt": expires_ms,
+    }
+    CLAUDE_CREDS.write_text(json.dumps(data, indent=2))
+
+
+def get_token():
+    """Get a valid access token, refreshing if needed."""
+    creds = load_credentials()
+    if not creds:
+        print("Error: No Claude Code credentials found.", file=sys.stderr)
+        print(f"  Checked: {CLAUDE_CREDS}", file=sys.stderr)
+        print(f"  Checked: {FORGE_CREDS}", file=sys.stderr)
+        print("  Run 'claude /login' or install Forge to set up credentials.", file=sys.stderr)
+        sys.exit(1)
+
+    if not is_expired(creds):
+        return creds["accessToken"], creds
+
+    # Token expired, try refresh
+    print(f"Token expired, refreshing...", file=sys.stderr)
+    new_token = refresh_token(creds)
+    if new_token:
+        print("Token refreshed successfully.", file=sys.stderr)
+        return new_token, creds
+
+    print("Error: Token expired and refresh failed.", file=sys.stderr)
+    print("  Run 'claude /login' to re-authenticate.", file=sys.stderr)
+    sys.exit(1)
+
+
+def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "--check":
+        creds = load_credentials()
+        if not creds:
+            print("No credentials found.")
+            sys.exit(1)
+        print(f"Source:        {creds['source']}")
+        print(f"Token prefix:  {creds['accessToken'][:20]}...")
+        print(f"Has refresh:   {'yes' if creds.get('refreshToken') else 'no'}")
+        expires = creds.get("expiresAt", 0)
+        if expires:
+            from datetime import datetime, timezone
+            dt = datetime.fromtimestamp(expires / 1000, tz=timezone.utc)
+            expired = is_expired(creds)
+            print(f"Expires:       {dt.isoformat()} ({'EXPIRED' if expired else 'valid'})")
+        else:
+            print("Expires:       unknown")
+        sys.exit(0)
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--export":
+        token, _ = get_token()
+        print(f'export ANTHROPIC_API_KEY="{token}"')
+        print(f'export ANTHROPIC_AUTH_TOKEN="{token}"')
+        sys.exit(0)
+
+    if len(sys.argv) > 1 and sys.argv[1] in ("--help", "-h"):
+        print(__doc__)
+        sys.exit(0)
+
+    token, _ = get_token()
+    print(token)
+
+
+if __name__ == "__main__":
+    main()

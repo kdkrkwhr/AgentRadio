@@ -1,0 +1,22 @@
+edition = 3
+
+[agent]
+name = "swe-atlas-agent"
+version = "0.1.0"
+description = "SWE Atlas QnA multi-agent peer (passive awareness) for deep codebase comprehension"
+
+readme = "Claude Code agent for SWE Atlas multi-agent collaboration via Coral — passive awareness variant (background watcher, script-based MCP, no MCP tools exposed)"
+summary = "4 peer agents collaborate to answer codebase questions, receiving messages in the background while working"
+
+[agent.license]
+type = "spdx"
+expression = "MIT"
+
+[options.auto_launch]
+type = "string"
+default = "true"
+
+[runtimes.executable]
+path = "bash"
+arguments = ["startup_passive.sh"]
+transport = "streamable_http"

@@ -1,0 +1,22 @@
+edition = 3
+
+[agent]
+name = "swe-atlas-agent"
+version = "0.1.0"
+description = "SWE Atlas QnA multi-agent peer (ablation: division-only, no negotiation)"
+
+readme = "Claude Code agent for SWE Atlas ablation experiment — division of labor without negotiation"
+summary = "4 agents with centralized coordination, no peer discussion or review"
+
+[agent.license]
+type = "spdx"
+expression = "MIT"
+
+[options.auto_launch]
+type = "string"
+default = "true"
+
+[runtimes.executable]
+path = "bash"
+arguments = ["startup_ablation.sh"]
+transport = "streamable_http"
