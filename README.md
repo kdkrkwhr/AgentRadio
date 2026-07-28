@@ -208,6 +208,112 @@ harbor run \
 
 `run_config/qa/run_passive_multi_agent.sh` wraps the same command as a batch runner, one harbor job per task id.
 
+## Running with DeepSeek-V4-Pro
+
+The multi-agent configurations (L1–L3) can be run with **DeepSeek-V4-Pro** agents instead of Opus 4.6, reproducing the DeepSeek column of the results table. Everything about the protocol, prompts, startup scripts, and resume guard is identical; only the LLM backend changes.
+
+Claude Code speaks only the Anthropic Messages API, while DeepSeek is served through OpenRouter (OpenAI-compatible only). We bridge the two with a **LiteLLM translation proxy hosted once on Modal**. The task containers install nothing — they just point `ANTHROPIC_BASE_URL` at the proxy's public URL. 
+
+The rubric verifier is unchanged: it still uses your Anthropic judge (`OPENAI_API_KEY` / `EVAL_MODEL`). DeepSeek is only the *agent* backend.
+
+### One-time proxy setup
+
+```bash
+# 1. An OpenRouter API key with deepseek-v4-pro access (https://openrouter.ai/keys)
+#    is stored as a Modal secret — it never leaves your Modal account.
+modal secret create openrouter-deepseek OPENROUTER_API_KEY=sk-or-...
+
+# 2. Deploy the proxy. This prints your personal URL.
+modal deploy multi_agent/deepseek_litellm_modal.py
+# -> https://<your-user>--deepseek-litellm-proxy-serve.modal.run
+
+# 3. Put that URL in .env so the adapters can find it:
+echo 'export AGENTRADIO_PROXY_URL=https://<your-user>--deepseek-litellm-proxy-serve.modal.run' >> .env
+source .env
+```
+
+The proxy stays warm (`min_containers=1`); redeploy only after editing it. To stop billing when idle: `modal app stop deepseek-litellm-proxy` (a later `modal deploy` brings it back).
+
+### L1 / L2 / L3 with DeepSeek
+
+Identical to the Opus commands above, but the import path points at the DeepSeek adapter and `-m "deepseek-v4-pro"` routes through the proxy. `source .env` must have exported `AGENTRADIO_PROXY_URL`. Task IDs and `-i` batching work exactly as above.
+
+#### DeepSeek B0 — single agent (baseline)
+
+The DeepSeek baseline uses a thin subclass of the built-in `claude-code` agent (it forces the proxy endpoint and drops the OAuth token the built-in agent would otherwise re-mint), so it takes `--agent-import-path` rather than `-a claude-code`.
+
+```bash
+source .env
+export PYTHONPATH="$(pwd):${PYTHONPATH:-}"
+
+harbor run \
+  -p ./data/qa \
+  --agent-import-path='multi_agent.claude_code_deepseek:ClaudeCodeDeepseek' \
+  -m "deepseek-v4-pro" \
+  -e modal -k 1 -n 1 \
+  -i "task-6905333b74f22949d97ba998" \
+  --ak reasoning_effort=high \
+  -o results/qa/ \
+  --job-name "deepseek-baseline-ba998" \
+  -y
+```
+
+#### DeepSeek L1 — division only
+
+```bash
+source .env
+export PYTHONPATH="$(pwd):${PYTHONPATH:-}"
+
+harbor run \
+  -p ./data/qa \
+  --agent-import-path='multi_agent.coral_multi_agent_ablation_deepseek:CoralMultiAgentAblationDeepseek' \
+  -m "deepseek-v4-pro" \
+  -e modal -k 1 -n 1 \
+  -i "task-6905333b74f22949d97ba998" \
+  --ak reasoning_effort=high \
+  -o results/qa/ \
+  --job-name "deepseek-division-ba998" \
+  -y
+```
+
+#### DeepSeek L2 — + negotiation
+
+```bash
+source .env
+export PYTHONPATH="$(pwd):${PYTHONPATH:-}"
+
+harbor run \
+  -p ./data/qa \
+  --agent-import-path='multi_agent.coral_multi_agent_deepseek:CoralMultiAgentDeepseek' \
+  -m "deepseek-v4-pro" \
+  -e modal -k 1 -n 1 \
+  -i "task-6905333b74f22949d97ba998" \
+  --ak reasoning_effort=high \
+  -o results/qa/ \
+  --job-name "deepseek-divneg-ba998" \
+  -y
+```
+
+#### DeepSeek L3 — + passive awareness
+
+```bash
+source .env
+export PYTHONPATH="$(pwd):${PYTHONPATH:-}"
+
+harbor run \
+  -p ./data/qa \
+  --agent-import-path='multi_agent.coral_multi_agent_passive_deepseek:CoralMultiAgentPassiveDeepseek' \
+  -m "deepseek-v4-pro" \
+  -e modal -k 1 -n 1 \
+  -i "task-6905333b74f22949d97ba998" \
+  --ak reasoning_effort=high \
+  -o results/qa/ \
+  --job-name "deepseek-passive-ba998" \
+  -y
+```
+
+The shared proxy injection (which swaps the LLM backend while inheriting all multi-agent logic, startup scripts, and the resume guard) lives in `multi_agent/deepseek_proxy.py`; the B0 baseline subclass is `multi_agent/claude_code_deepseek.py`.
+
 ### Resume a cancelled or failed job
 
 ```bash
@@ -260,7 +366,7 @@ task-xxx__randomId/
 
 ## Acknowledgements
 
-The task data is the [SWE-Atlas QnA](https://github.com/scaleapi/SWE-Atlas) benchmark (harbor dataset `scale-ai/swe-atlas-qna`) by Scale AI. Runs are orchestrated with [Harbor](https://github.com/laude-institute/harbor) on [Modal](https://modal.com). The message server builds on [Coral Server](https://github.com/Coral-Protocol/coral-server).
+The task data is the [SWE-Atlas QnA](https://github.com/scaleapi/SWE-Atlas) benchmark (harbor dataset `scale-ai/swe-atlas-qna`) by Scale AI. Runs are orchestrated with [Harbor](https://github.com/laude-institute/harbor) on [Modal](https://modal.com). 
 
 ## License
 
