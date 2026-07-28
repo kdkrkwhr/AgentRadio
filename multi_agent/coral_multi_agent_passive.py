@@ -28,6 +28,8 @@ from harbor.agents.installed.base import BaseInstalledAgent
 from harbor.environments.base import BaseEnvironment
 from harbor.models.agent.context import AgentContext
 
+from multi_agent.resume_guard import upload_guarded_startup
+
 # Files to upload into the container
 MULTI_AGENT_DIR = Path(__file__).parent
 CORAL_SERVER_JAR = MULTI_AGENT_DIR / "coral-server.jar"
@@ -144,6 +146,14 @@ class CoralMultiAgentPassive(BaseInstalledAgent):
                 f"chmod +x {AGENT_DIR}/startup_passive.sh "
                 f"{AGENT_DIR}/passive_scripts/*.sh"
             ),
+        )
+
+        # Overwrite the container startup with the resume-guarded version:
+        # if claude exits before the team answer exists, relaunch with --continue.
+        await upload_guarded_startup(
+            self, environment,
+            STARTUP_SH,
+            f"{AGENT_DIR}/startup_passive.sh",
         )
 
         await self.exec_as_agent(
