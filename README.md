@@ -4,8 +4,6 @@
 
 This repository contains the code and data to reproduce the experiments of the paper *AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration*.
 
-![AgentRadio](main.png)
-
 **AgentRadio** is an asynchronous message-passing layer that equips coding-agent harnesses with three primitives — `create_thread`, `send_message`, and `wait_for_mention`. The last one runs as a **background task** of the harness, so teammates' messages surface between an agent's work steps without interrupting the foreground. Each agent stays *passively aware* of its peers and folds new findings into its ongoing task, instead of choosing between working and listening.
 
 We evaluate on **SWE-Atlas QnA** (124 long-horizon codebase-understanding tasks over 11 production repositories, 1,306 rubrics), under a five-phase protocol of division of labor and negotiation, with four Claude Code agents. The ladder of configurations isolates each layer:
