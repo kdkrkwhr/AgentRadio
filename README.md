@@ -96,7 +96,7 @@ binary directly:
 
 ```bash
 curl -L -o multi_agent/coral-server.jar \
-  "https://drive.usercontent.google.com/download?id=1F0KcnOM0EgRcSXDLuRGgMriMGK4HSzBJ&export=download&confirm=t"
+  "https://drive.usercontent.google.com/download?id=17b40_1kXFrAC0pnN8w_7PPY13O7pYVke&export=download&confirm=t"
 ```
 
 The adapters upload this JAR into each task container. Nothing needs to run locally, so no local JDK is required.
