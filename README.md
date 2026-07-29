@@ -1,5 +1,7 @@
 # AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration
 
+![AgentRadio](main.png)
+
 This repository contains the code and data to reproduce the experiments of the paper *AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration*.
 
 ![AgentRadio](main.png)
