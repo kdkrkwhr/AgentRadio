@@ -26,7 +26,7 @@ multi_agent/
   coral_multi_agent_passive.py    L3 adapter: full AgentRadio (passive awareness)
   startup.sh / startup_ablation.sh / startup_passive.sh
                                   per-agent bootstrap + protocol prompts (CLAUDE.md)
-  coral-agent*.toml               Coral Server agent definitions
+  coral-agent*.toml               message-server agent definitions
   passive_scripts/                MCP-over-HTTP shell primitives (create_thread /
                                   send_message / wait_for_mention / read_resource)
   coral-server.jar                message server (download from Releases, see below)
@@ -42,7 +42,7 @@ Every task directory under `data/qa/` carries the instruction, the pinned execut
 
 ## Setup
 
-Runs execute in Docker containers on [Modal](https://modal.com), orchestrated by [Harbor](https://github.com/laude-institute/harbor). One task = one container running the Coral message server plus four Claude Code agents.
+Runs execute in Docker containers on [Modal](https://modal.com), orchestrated by [Harbor](https://github.com/laude-institute/harbor). One task = one container running the message server plus four Claude Code agents.
 
 ### 1. Docker Desktop
 
@@ -86,13 +86,15 @@ claude --version
 
 You need a **Claude Max subscription** for the agents. The verifier additionally needs an **Anthropic API key**.
 
-### 6. Coral Server JAR
+### 6. Message server JAR
 
-The 106 MB server JAR ships as a GitHub Release asset (too large for a git blob):
+The 106 MB server JAR is hosted as an anonymized artifact (too large for a git blob).
+The `confirm=t` parameter bypasses the large-file scan interstitial so `curl` gets the
+binary directly:
 
 ```bash
 curl -L -o multi_agent/coral-server.jar \
-  https://github.com/Coral-Protocol/AgentRadio/releases/download/v1.0.0/coral-server.jar
+  "https://drive.usercontent.google.com/download?id=1F0KcnOM0EgRcSXDLuRGgMriMGK4HSzBJ&export=download&confirm=t"
 ```
 
 The adapters upload this JAR into each task container. Nothing needs to run locally, so no local JDK is required.

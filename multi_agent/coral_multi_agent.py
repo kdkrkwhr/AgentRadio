@@ -1,7 +1,7 @@
 """
-Custom Harbor agent: 4 Claude Code instances + Coral Server.
+Custom Harbor agent: 4 Claude Code instances + message server.
 
-Coral Server auto-launches agents via executable runtime (startup.sh),
+message server auto-launches agents via executable runtime (startup.sh),
 which handles secret injection, .mcp.json setup, and CLAUDE.md generation.
 
 Usage:
@@ -34,7 +34,7 @@ CORAL_AGENT_TOML = MULTI_AGENT_DIR / "coral-agent.toml"
 
 
 class CoralMultiAgent(BaseInstalledAgent):
-    """Harbor agent: orchestrates Coral Server + 4 Claude Code instances."""
+    """Harbor agent: orchestrates message server + 4 Claude Code instances."""
 
     SUPPORTS_ATIF: bool = False
 
@@ -102,7 +102,7 @@ class CoralMultiAgent(BaseInstalledAgent):
             ),
         )
 
-        # 3. Upload coral server JAR + startup files
+        # 3. Upload the message-server JAR + startup files
         WS = "/tmp/coral-workspace"
         AGENT_DIR = f"{WS}/swe-atlas-agent"
 
@@ -179,11 +179,11 @@ class CoralMultiAgent(BaseInstalledAgent):
             env=env,
         )
 
-        # 2. Start Coral Server with health check
+        # 2. Start message server with health check
         await self.exec_as_agent(
             environment,
             command=(
-                f"echo '>>> [run] Starting Coral Server...' && "
+                f"echo '>>> [run] Starting message server...' && "
                 f"java -jar {WS}/coral-server.jar "
                 f"--auth.keys=test "
                 f"--network.bind_port=5555 "
@@ -193,19 +193,19 @@ class CoralMultiAgent(BaseInstalledAgent):
                 f"--registry.local_agents={AGENT_DIR} "
                 f"> {WS}/coral-server.log 2>&1 & "
                 f"CORAL_PID=$! && "
-                f"echo '>>> [run] Coral Server PID: '$CORAL_PID && "
+                f"echo '>>> [run] message server PID: '$CORAL_PID && "
                 f"for i in $(seq 1 30); do "
                 f"  if curl -s http://localhost:5555/api/v1/local/namespace "
                 f'    -H "Authorization: Bearer test" > /dev/null 2>&1; then '
-                f"    echo '>>> [run] Coral Server ready after '$i' checks'; "
+                f"    echo '>>> [run] message server ready after '$i' checks'; "
                 f"    break; "
                 f"  fi; "
                 f"  if ! kill -0 $CORAL_PID 2>/dev/null; then "
-                f"    echo '>>> [run] ERROR: Coral Server died!'; "
+                f"    echo '>>> [run] ERROR: message server died!'; "
                 f"    cat {WS}/coral-server.log | tail -30; "
                 f"    exit 1; "
                 f"  fi; "
-                f"  echo '>>> [run] Waiting for Coral Server... ('$i'/30)'; "
+                f"  echo '>>> [run] Waiting for message server... ('$i'/30)'; "
                 f"  sleep 2; "
                 f"done"
             ),
@@ -313,7 +313,7 @@ class CoralMultiAgent(BaseInstalledAgent):
             timeout_sec=7200,
         )
 
-        # 6. Final save of coral session state + agent claude-code logs
+        # 6. Final save of session state + agent claude-code logs
         await self.exec_as_agent(
             environment,
             command=(

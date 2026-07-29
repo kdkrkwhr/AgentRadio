@@ -11,7 +11,7 @@
 #          grew past the baseline   -> BREAK (a new message appeared in the resource)
 #        - otherwise keep looping (up to maxRounds).
 #
-# [SWE-Atlas passive variant] Adapted from coral-reef: on a MENTION break we now ALSO
+# [SWE-Atlas passive variant] on a MENTION break we now ALSO
 # re-read and print the full coral://state, so the output of this script is always
 # self-contained (the caller never needs a separate read_resource call, and messages
 # that arrived between the mention and the next watcher start are not silently

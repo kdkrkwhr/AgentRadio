@@ -10,7 +10,7 @@ translates Anthropic -> OpenRouter. We host that proxy once on Modal (see
 backend: it intercepts every container `exec_as_agent` and merges the proxy
 endpoint into the env. The Opus adapters' `run()` builds an env dict (OAuth
 token, `ANTHROPIC_MODEL`, ...) but never sets `ANTHROPIC_BASE_URL`; merging here
-covers the Coral Server start (whose child `claude` processes inherit the env)
+covers the message-server start (whose child `claude` processes inherit the env)
 and every other agent-user exec.
 
 The proxy URL is per-deployment (each `modal deploy` prints

@@ -6,7 +6,7 @@
 # No `jq` required - JSON is built/parsed by the bundled coral_json.py (Python 3 stdlib only).
 # Override the interpreter with CORAL_PY if needed (e.g. CORAL_PY=python).
 #
-# [SWE-Atlas passive variant] Adapted from coral-reef: added curl timeouts so a hung
+# [SWE-Atlas passive variant] added curl timeouts so a hung
 # server connection can never block an agent forever (server-side wait per round is
 # capped at 60s by wait_for_mention, so 120s is a safe outer bound).
 

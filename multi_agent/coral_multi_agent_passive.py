@@ -1,8 +1,8 @@
 """
-Custom Harbor agent: 4 Claude Code instances + Coral Server — PASSIVE AWARENESS variant.
+Custom Harbor agent: 4 Claude Code instances + message server — PASSIVE AWARENESS variant.
 
 Same orchestration as CoralMultiAgent, but:
-  - Coral MCP is NOT exposed to Claude Code (startup_passive.sh writes no .mcp.json).
+  - The MCP is NOT exposed to Claude Code (startup_passive.sh writes no .mcp.json).
   - Agents talk to Coral through per-instance shell scripts (curl + python3, MCP over
     Streamable HTTP) with the agent's connection URL baked into thin wrappers.
   - Agents receive messages via a background watcher (wait_for_mention.sh run as a
@@ -47,7 +47,7 @@ PASSIVE_SCRIPTS = [
 
 
 class CoralMultiAgentPassive(BaseInstalledAgent):
-    """Harbor agent: Coral Server + 4 Claude Code instances with passive awareness."""
+    """Harbor agent: message server + 4 Claude Code instances with passive awareness."""
 
     SUPPORTS_ATIF: bool = False
 
@@ -116,7 +116,7 @@ class CoralMultiAgentPassive(BaseInstalledAgent):
             ),
         )
 
-        # 3. Upload coral server JAR + startup files + communication scripts
+        # 3. Upload the message-server JAR + startup files + communication scripts
         WS = "/tmp/coral-workspace"
         AGENT_DIR = f"{WS}/swe-atlas-agent"
 
@@ -201,11 +201,11 @@ class CoralMultiAgentPassive(BaseInstalledAgent):
             env=env,
         )
 
-        # 2. Start Coral Server with health check
+        # 2. Start message server with health check
         await self.exec_as_agent(
             environment,
             command=(
-                f"echo '>>> [run] Starting Coral Server...' && "
+                f"echo '>>> [run] Starting message server...' && "
                 f"java -jar {WS}/coral-server.jar "
                 f"--auth.keys=test "
                 f"--network.bind_port=5555 "
@@ -215,19 +215,19 @@ class CoralMultiAgentPassive(BaseInstalledAgent):
                 f"--registry.local_agents={AGENT_DIR} "
                 f"> {WS}/coral-server.log 2>&1 & "
                 f"CORAL_PID=$! && "
-                f"echo '>>> [run] Coral Server PID: '$CORAL_PID && "
+                f"echo '>>> [run] message server PID: '$CORAL_PID && "
                 f"for i in $(seq 1 30); do "
                 f"  if curl -s http://localhost:5555/api/v1/local/namespace "
                 f'    -H "Authorization: Bearer test" > /dev/null 2>&1; then '
-                f"    echo '>>> [run] Coral Server ready after '$i' checks'; "
+                f"    echo '>>> [run] message server ready after '$i' checks'; "
                 f"    break; "
                 f"  fi; "
                 f"  if ! kill -0 $CORAL_PID 2>/dev/null; then "
-                f"    echo '>>> [run] ERROR: Coral Server died!'; "
+                f"    echo '>>> [run] ERROR: message server died!'; "
                 f"    cat {WS}/coral-server.log | tail -30; "
                 f"    exit 1; "
                 f"  fi; "
-                f"  echo '>>> [run] Waiting for Coral Server... ('$i'/30)'; "
+                f"  echo '>>> [run] Waiting for message server... ('$i'/30)'; "
                 f"  sleep 2; "
                 f"done"
             ),
@@ -335,7 +335,7 @@ class CoralMultiAgentPassive(BaseInstalledAgent):
             timeout_sec=7200,
         )
 
-        # 6. Final save of coral session state + agent claude-code logs
+        # 6. Final save of session state + agent claude-code logs
         await self.exec_as_agent(
             environment,
             command=(

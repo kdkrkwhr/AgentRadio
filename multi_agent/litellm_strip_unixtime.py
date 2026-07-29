@@ -1,10 +1,11 @@
 """LiteLLM proxy hardening hooks (loaded as /tmp/custom_callbacks.py on Modal).
 
-Two protections, both observed to matter for DeepSeek + Coral runs:
+Two protections, both observed to matter for DeepSeek multi-agent runs:
 
-1. Hide `currentUnixTime` from the Coral wait tools (pre-call).
-   LLMs cannot know the real time, so they hallucinate values. In the Coral
-   Server build shipped here the field is an int interpreted as epoch-ms, so a
+1. Hide `currentUnixTime` from the wait tools (pre-call).
+   LLMs cannot know the real time, so they hallucinate values. In the
+   message-server build shipped here the field is an int interpreted as
+   epoch-ms, so a
    second-level value replays the whole thread history (duplicate redelivery)
    and a millisecond value overflows and crashes deserialization. Omitting the
    field entirely makes the server default to its own clock — the only correct

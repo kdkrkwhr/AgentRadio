@@ -1,7 +1,7 @@
 #!/bin/bash
 set -uo pipefail
 
-# Live-monitor the coral session state from running modal containers.
+# Live-monitor the session state from running modal containers.
 # Every interval, executes agent-1's read_resource.sh INSIDE each container to read
 # coral://state (server in-memory state: all threads + messages, REAL-TIME — unlike
 # coral-server.log which is JVM-buffered and lags), overwriting the local copy

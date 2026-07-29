@@ -1,9 +1,9 @@
 #!/bin/bash
 # SWE Atlas Multi-Agent startup script — PASSIVE AWARENESS variant.
-# Launched by Coral Server for each agent instance.
+# Launched by the message server for each agent instance.
 #
 # Differences from startup.sh (blocking baseline):
-#   - Coral MCP is NOT exposed to Claude Code (no .mcp.json). All communication goes
+#   - The MCP is NOT exposed to Claude Code (no .mcp.json). All communication goes
 #     through per-agent shell scripts (curl + python3, MCP over Streamable HTTP).
 #   - Each agent instance gets its own scripts/ folder with the agent's MCP URL baked
 #     into thin wrappers, so the model never handles the URL.
@@ -58,7 +58,7 @@ WRAP_EOF
 
 cat > "$INSTANCE_DIR/scripts/read_resource.sh" << WRAP_EOF
 #!/bin/bash
-# usage: read_resource.sh   (prints the full coral state: threads, messages, agents)
+# usage: read_resource.sh   (prints the full shared state: threads, messages, agents)
 exec bash "$INSTANCE_DIR/scripts/_lib/read_resource.sh" "$CORAL_CONNECTION_URL"
 WRAP_EOF
 
@@ -77,7 +77,7 @@ cat > "$INSTANCE_DIR/CLAUDE.md" << CLAUDE_EOF
 You are $CORAL_AGENT_ID, one of 4 equal agents collaborating to answer a codebase question.
 Your peers: agent-1, agent-2, agent-3, agent-4.
 You talk to your peers ONLY through the shell scripts in ./scripts — you do NOT have
-Coral MCP tools. You RECEIVE messages via a background watcher while you keep working
+the MCP tools. You RECEIVE messages via a background watcher while you keep working
 in the foreground.
 
 The task instruction is at: $INSTRUCTION_PATH

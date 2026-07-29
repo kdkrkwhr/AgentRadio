@@ -3,7 +3,7 @@
 Problem: an agent's claude process can exit before the team's final answer
 exists — either killed by a transient API error surfaced as a final message,
 or by the model ending its turn with plain text (no tool call), which
-`claude -p` treats as conversation over. In a coral session nothing restarts
+`claude -p` treats as conversation over. In a multi-agent session nothing restarts
 the process, so the agent is permanently gone; when it is agent-1 (the
 assembler) the whole task is doomed.
 
@@ -28,7 +28,7 @@ LAUNCH_LINE = (
 
 GUARD_BLOCK = r'''# --- resume-guard: relaunch claude if it exits before the team answer exists ---
 ANSWER_FILE=/logs/agent/answer.txt
-RESUME_GUARD_PROMPT='Your session was resumed because your process exited before the team final answer was written to /logs/agent/answer.txt (it still does not exist). Continue your role in the multi-agent protocol from where you left off: re-check the coral state / messages as your instructions describe, actually SEND anything you drafted but never sent, respond to pending items, and keep participating until the final answer file exists. If you are agent-1 (the assembler), finish the remaining phases and write the final answer to /logs/agent/answer.txt exactly as originally instructed.'
+RESUME_GUARD_PROMPT='Your session was resumed because your process exited before the team final answer was written to /logs/agent/answer.txt (it still does not exist). Continue your role in the multi-agent protocol from where you left off: re-check the shared state / messages as your instructions describe, actually SEND anything you drafted but never sent, respond to pending items, and keep participating until the final answer file exists. If you are agent-1 (the assembler), finish the remaining phases and write the final answer to /logs/agent/answer.txt exactly as originally instructed.'
 claude --verbose --output-format=stream-json --permission-mode=bypassPermissions --effort high --print -- "$PROMPT" 2>&1 </dev/null | tee "$LOG_FILE"
 RELAUNCH=0
 while [ ! -f "$ANSWER_FILE" ]; do

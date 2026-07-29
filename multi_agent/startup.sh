@@ -1,6 +1,6 @@
 #!/bin/bash
 # SWE Atlas Multi-Agent startup script
-# Launched by Coral Server for each agent instance.
+# Launched by the message server for each agent instance.
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TESTBED_DIR="$(dirname "$SCRIPT_DIR")"
@@ -33,7 +33,7 @@ cat > "$INSTANCE_DIR/.mcp.json" << EOF
 }
 EOF
 
-# Write .claude/settings.local.json to auto-trust coral MCP server
+# Write .claude/settings.local.json to auto-trust the MCP server
 cat > "$CLAUDE_SETTINGS_DIR/settings.local.json" << EOF
 {
   "permissions": {
@@ -60,7 +60,7 @@ cat > "$INSTANCE_DIR/CLAUDE.md" << CLAUDE_EOF
 
 You are $CORAL_AGENT_ID, one of 4 equal agents collaborating to answer a codebase question.
 Your peers: agent-1, agent-2, agent-3, agent-4.
-You communicate via Coral MCP tools.
+You communicate via the MCP tools.
 
 The task instruction is at: $INSTRUCTION_PATH
 The target repository is at: $REPO_DIR
