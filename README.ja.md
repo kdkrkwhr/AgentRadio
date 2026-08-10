@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Coral-Protocol/AgentRadio/discussions"><img src="https://img.shields.io/badge/ディスカッション-参加-5865F2?style=for-the-badge&logo=github&logoColor=white" alt="ディスカッション"></a>
+  <a href="https://discord.gg/GSHKNXF8U"><img src="https://img.shields.io/badge/Discord-参加-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
   <a href="https://github.com/Coral-Protocol"><img src="https://img.shields.io/badge/Coral_Protocol-Org-FF5C8A?style=for-the-badge&logo=github&logoColor=white" alt="Coral Protocol"></a>
 </p>
 
