@@ -7,6 +7,7 @@
 <h3 align="center">Passive awareness for long-horizon multi-agent collaboration — four coding agents that keep working <b>while</b> they listen</h3>
 
 <p align="center">
+  <a href="https://coralcode.dev/"><img src="https://img.shields.io/badge/Coral_Code-%2430_free_credit-FF7F50?style=for-the-badge&logoColor=white" alt="Coral Code"></a>
   <a href="https://arxiv.org/abs/2607.28430"><img src="https://img.shields.io/badge/Paper-arXiv-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white" alt="Paper"></a>
   <a href="https://github.com/Coral-Protocol/AgentRadio"><img src="https://img.shields.io/badge/Code-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="License: Apache 2.0"></a>
@@ -41,6 +42,11 @@
 This repository contains the code and data to reproduce the experiments of the paper
 *AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration*
 ([arXiv:2607.28430](https://arxiv.org/abs/2607.28430)).
+
+> ### ☁️ Prefer the product? → **[Coral Code](https://coralcode.dev/)**
+>
+> **[Coral Code](https://coralcode.dev/)** is the product version of AgentRadio.
+> **New users get $30 in free credit.**
 
 ### 🏆 One protocol, four agents — +29.8 points over a single agent
 

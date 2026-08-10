@@ -7,6 +7,7 @@
 <h3 align="center">面向长周期多智能体协作的被动感知——四个编程智能体<b>一边工作一边倾听</b></h3>
 
 <p align="center">
+  <a href="https://coralcode.dev/"><img src="https://img.shields.io/badge/Coral_Code-新用户_%2430_额度-FF7F50?style=for-the-badge&logoColor=white" alt="Coral Code"></a>
   <a href="https://arxiv.org/abs/2607.28430"><img src="https://img.shields.io/badge/论文-arXiv-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white" alt="论文"></a>
   <a href="https://github.com/Coral-Protocol/AgentRadio"><img src="https://img.shields.io/badge/代码-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/许可证-Apache_2.0-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="许可证：Apache 2.0"></a>
@@ -39,6 +40,11 @@
 
 本仓库包含复现论文 *AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration*
 （[arXiv:2607.28430](https://arxiv.org/abs/2607.28430)）实验所需的代码与数据。
+
+> ### ☁️ 想直接用产品？→ **[Coral Code](https://coralcode.dev/)**
+>
+> **[Coral Code](https://coralcode.dev/)** 是 AgentRadio 的产品版本。
+> **新用户可获得 30 美元免费额度。**
 
 ### 🏆 一套协议，四个智能体——比单智能体高出 29.8 个百分点
 

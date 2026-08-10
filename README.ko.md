@@ -7,6 +7,7 @@
 <h3 align="center">장기 과제 멀티에이전트 협업을 위한 수동적 인지 — 네 개의 코딩 에이전트가 <b>일하면서</b> 듣는다</h3>
 
 <p align="center">
+  <a href="https://coralcode.dev/"><img src="https://img.shields.io/badge/Coral_Code-신규_%2430_크레딧-FF7F50?style=for-the-badge&logoColor=white" alt="Coral Code"></a>
   <a href="https://arxiv.org/abs/2607.28430"><img src="https://img.shields.io/badge/논문-arXiv-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white" alt="논문"></a>
   <a href="https://github.com/Coral-Protocol/AgentRadio"><img src="https://img.shields.io/badge/코드-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/라이선스-Apache_2.0-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="라이선스: Apache 2.0"></a>
@@ -41,6 +42,11 @@
 이 저장소는 논문 *AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration*
 ([arXiv:2607.28430](https://arxiv.org/abs/2607.28430))의 실험을 재현하기 위한 코드와 데이터를
 담고 있습니다.
+
+> ### ☁️ 제품 버전을 찾으신다면 → **[Coral Code](https://coralcode.dev/)**
+>
+> **[Coral Code](https://coralcode.dev/)** 는 AgentRadio의 제품 버전입니다.
+> **신규 사용자에게 30달러 무료 크레딧을 드립니다.**
 
 ### 🏆 하나의 프로토콜, 네 개의 에이전트 — 단일 에이전트 대비 +29.8 포인트
 

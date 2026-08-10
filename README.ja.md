@@ -7,6 +7,7 @@
 <h3 align="center">長期タスクのマルチエージェント協調に受動的アウェアネスを——4 体のコーディングエージェントが<b>働きながら</b>聞く</h3>
 
 <p align="center">
+  <a href="https://coralcode.dev/"><img src="https://img.shields.io/badge/Coral_Code-新規登録で_%2430_分-FF7F50?style=for-the-badge&logoColor=white" alt="Coral Code"></a>
   <a href="https://arxiv.org/abs/2607.28430"><img src="https://img.shields.io/badge/論文-arXiv-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white" alt="論文"></a>
   <a href="https://github.com/Coral-Protocol/AgentRadio"><img src="https://img.shields.io/badge/コード-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/ライセンス-Apache_2.0-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="ライセンス: Apache 2.0"></a>
@@ -41,6 +42,11 @@
 本リポジトリは、論文 *AgentRadio: Passive Awareness for Long-Horizon Multi-Agent Collaboration*
 （[arXiv:2607.28430](https://arxiv.org/abs/2607.28430)）の実験を再現するためのコードとデータを
 収録しています。
+
+> ### ☁️ 製品版はこちら → **[Coral Code](https://coralcode.dev/)**
+>
+> **[Coral Code](https://coralcode.dev/)** は AgentRadio の製品版です。
+> **新規ユーザーには 30 ドル分の無料クレジットが付きます。**
 
 ### 🏆 1 つのプロトコル、4 体のエージェント——単一エージェント比 +29.8 ポイント
 

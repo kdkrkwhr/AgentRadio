@@ -7,6 +7,7 @@
 <h3 align="center">الوعي السلبي للتعاون متعدد الوكلاء في المهام طويلة الأمد — أربعة وكلاء برمجة يواصلون العمل <b>بينما</b> يستمعون</h3>
 
 <p align="center">
+  <a href="https://coralcode.dev/"><img src="https://img.shields.io/badge/Coral_Code-%2430_free_credit-FF7F50?style=for-the-badge&logoColor=white" alt="Coral Code"></a>
   <a href="https://arxiv.org/abs/2607.28430"><img src="https://img.shields.io/badge/Paper-arXiv-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white" alt="البحث"></a>
   <a href="https://github.com/Coral-Protocol/AgentRadio"><img src="https://img.shields.io/badge/Code-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-D22128?style=for-the-badge&logo=apache&logoColor=white" alt="الرخصة: Apache 2.0"></a>
@@ -44,6 +45,12 @@
 (<a href="https://arxiv.org/abs/2607.28430">arXiv:2607.28430</a>).
 
 </div>
+
+<blockquote dir="rtl">
+<h3>☁️ تفضّل النسخة المنتَج؟ ← <a href="https://coralcode.dev/">Coral Code</a></h3>
+<p><b><a href="https://coralcode.dev/">Coral Code</a></b> هي النسخة المنتَج من AgentRadio.
+<b>يحصل المستخدمون الجدد على رصيد مجاني بقيمة 30 دولارًا.</b></p>
+</blockquote>
 
 ### 🏆 بروتوكول واحد، أربعة وكلاء — بزيادة 29.8 نقطة على الوكيل المفرد
 
