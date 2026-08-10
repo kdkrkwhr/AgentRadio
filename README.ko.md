@@ -61,6 +61,7 @@ AgentRadio 하의 Opus 4.6 에이전트 넷(62.1 %)은 가장 강력한 단일 �
 
 ## 📣 소식
 
+- **2026-08** — AgentRadio가 [VentureBeat](https://venturebeat.com/)에 소개되었습니다: [「실시간으로 협업하는 네 개의 AI 에이전트가 기업용 코딩 과제에서 Claude Opus 4.8을 앞섰다」](https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks). 📰
 - **2026-07** — AgentRadio 논문이 [arXiv](https://arxiv.org/abs/2607.28430)에 공개되었습니다. 🎉
 - **2026-07** — 코드, 어댑터, 124개 SWE-Atlas QnA 과제 전체 설정이 오픈소스로 공개되었습니다. 🚀
 
@@ -580,25 +581,6 @@ DeepSeek V4 Pro: 17승 3패, p = 0.0026.
   url    = {https://arxiv.org/abs/2607.28430}
 }
 ```
-
----
-
-## Star History
-
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date&theme=dark"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-</picture>
 
 ---
 

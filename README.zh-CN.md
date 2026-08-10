@@ -59,6 +59,7 @@ Claude Code（57.2 %）。
 
 ## 📣 最新动态
 
+- **2026-08** — AgentRadio 被美国主流科技媒体 [VentureBeat](https://venturebeat.com/) 报道：[《四个 AI 智能体实时协作，在企业级编程任务上超越 Claude Opus 4.8》](https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks)。📰
 - **2026-07** — AgentRadio 论文发布于 [arXiv](https://arxiv.org/abs/2607.28430)。🎉
 - **2026-07** — 代码、适配器以及完整的 124 个 SWE-Atlas QnA 任务配置全部开源。🚀
 
@@ -562,25 +563,6 @@ DeepSeek V4 Pro：赢 17、输 3，p = 0.0026。
   url    = {https://arxiv.org/abs/2607.28430}
 }
 ```
-
----
-
-## Star History
-
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date&theme=dark"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-</picture>
 
 ---
 

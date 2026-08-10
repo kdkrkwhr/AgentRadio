@@ -61,6 +61,7 @@ single-agent leaderboard entry, Claude Code with the newer Opus 4.8 (57.2 %).
 
 ## 📣 News
 
+- **2026-08** — AgentRadio was covered by [VentureBeat](https://venturebeat.com/): ["Four AI agents coordinating in real time outperformed Claude Opus 4.8 on enterprise coding tasks"](https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks). 📰
 - **2026-07** — The AgentRadio paper is released on [arXiv](https://arxiv.org/abs/2607.28430). 🎉
 - **2026-07** — Code, adapters, and the full 124-task SWE-Atlas QnA setup are open-sourced. 🚀
 
@@ -586,25 +587,6 @@ The task data is the [SWE-Atlas QnA](https://github.com/scaleapi/SWE-Atlas) benc
   url    = {https://arxiv.org/abs/2607.28430}
 }
 ```
-
----
-
-## Star History
-
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date&theme=dark"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-</picture>
 
 ---
 

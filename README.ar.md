@@ -71,6 +71,7 @@ Claude Code مع الإصدار الأحدث Opus 4.8 (‏57.2 %).
 <div dir="rtl">
 
 <ul>
+<li><b>2026-08</b> — تناولت <a href="https://venturebeat.com/">VentureBeat</a> مشروع AgentRadio في مقال بعنوان <a href="https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks">«أربعة وكلاء ذكاء اصطناعي يتنسّقون في الوقت الحقيقي يتفوّقون على Claude Opus 4.8 في مهام البرمجة المؤسسية»</a>. 📰</li>
 <li><b>2026-07</b> — نُشر بحث AgentRadio على <a href="https://arxiv.org/abs/2607.28430">arXiv</a>. 🎉</li>
 <li><b>2026-07</b> — إتاحة الشيفرة والمحوِّلات والإعداد الكامل لمهام SWE-Atlas QnA الـ 124 كمصدر مفتوح. 🚀</li>
 </ul>
@@ -716,25 +717,6 @@ task-xxx__randomId/
   url    = {https://arxiv.org/abs/2607.28430}
 }
 ```
-
----
-
-## Star History
-
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date&theme=dark"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-</picture>
 
 ---
 

@@ -61,6 +61,7 @@ Opus 4.6 エージェント 4 体（62.1 %）は、単一エージェントの�
 
 ## 📣 ニュース
 
+- **2026-08** — AgentRadio が [VentureBeat](https://venturebeat.com/) に取り上げられました：[「リアルタイムに連携する 4 体の AI エージェントが、企業向けコーディングタスクで Claude Opus 4.8 を上回った」](https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks)。📰
 - **2026-07** — AgentRadio 論文を [arXiv](https://arxiv.org/abs/2607.28430) で公開しました。🎉
 - **2026-07** — コード、アダプタ、および 124 タスク分の SWE-Atlas QnA 設定一式をオープンソース化しました。🚀
 
@@ -589,25 +590,6 @@ DeepSeek V4 Pro：17 勝 3 敗、p = 0.0026。
   url    = {https://arxiv.org/abs/2607.28430}
 }
 ```
-
----
-
-## Star History
-
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date&theme=dark"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-</picture>
 
 ---
 

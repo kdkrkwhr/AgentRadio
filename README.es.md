@@ -61,6 +61,7 @@ agente único en la tabla de clasificación: Claude Code con el más reciente Op
 
 ## 📣 Novedades
 
+- **2026-08** — [VentureBeat](https://venturebeat.com/) cubrió AgentRadio: [«Cuatro agentes de IA coordinándose en tiempo real superaron a Claude Opus 4.8 en tareas de programación empresarial»](https://venturebeat.com/orchestration/four-ai-agents-coordinating-in-real-time-outperformed-claude-opus-4-8-on-enterprise-coding-tasks). 📰
 - **2026-07** — El artículo de AgentRadio se publica en [arXiv](https://arxiv.org/abs/2607.28430). 🎉
 - **2026-07** — Se liberan el código, los adaptadores y la configuración completa de las 124 tareas de SWE-Atlas QnA. 🚀
 
@@ -596,25 +597,6 @@ Los datos de las tareas provienen del benchmark
   url    = {https://arxiv.org/abs/2607.28430}
 }
 ```
-
----
-
-## Star History
-
-<picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date&theme=dark"
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=Coral-Protocol/AgentRadio&type=Date"
-  />
-</picture>
 
 ---
 
