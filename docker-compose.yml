@@ -1,0 +1,80 @@
+# AgentRadio — Local Multi-Agent Dev Stack (Step 1)
+#
+# Goal: let local developers wire multiple agents (e.g. Hermes profiles:
+# pm / dev / infra / qa / ops) against a local Coral message server without
+# polluting the host filesystem.
+#
+# This file does NOT modify any upstream source. It only adds an optional
+# local-orchestration layer. Copy to `.env` or export the vars below.
+#
+# Required host env (export before `docker compose up`):
+#   PROJECT_ROOT    absolute path to your project code root  (e.g. D:\develop\project)
+#   HERMES_HOME     absolute path to Hermes profiles dir     (e.g. D:\develop\e2e\hermes\profiles)
+# Optional:
+#   CORAL_PORT       host port for the message server  (default 5555)
+#   AGENT_IMAGE      image to build/run agents from    (default agentradio-agent)
+#   HERMES_WRITE_SAFE_ROOT  path agents are allowed to write under (safety fence)
+#
+# Usage:
+#   export PROJECT_ROOT=/d/develop/project HERMES_HOME=/d/develop/e2e/hermes/profiles
+#   docker compose -f docker-compose.yml up --build
+
+services:
+  coral-server:
+    # Message server (JAR) — ships only as a GitHub Release asset, never in git.
+    # Mount the downloaded jar from the host; see README "6. Message server JAR".
+    image: eclipse-temurin:21-jre
+    container_name: agentradio-coral
+    command: >
+      java -jar /opt/coral/coral-server.jar
+      --network.bind_port=5555
+      --network.allow_any_host=true
+      --auth.keys=localdev
+    volumes:
+      - ./multi_agent/coral-server.jar:/opt/coral/coral-server.jar:ro
+    ports:
+      - "${CORAL_PORT:-5555}:5555"
+    networks:
+      - agentradio-net
+    restart: always
+    healthcheck:
+      test: ["CMD", "sh", "-c", "wget -q -O /dev/null http://localhost:5555/api/v1/local/namespace || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  agent:
+    # One reusable agent service. Override `command` / `environment.AGENT_PROFILE`
+    # per profile (pm/dev/infra/qa/ops) by extending this service in your own compose.
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    image: "${AGENT_IMAGE:-agentradio-agent}"
+    container_name: agentradio-agent
+    depends_on:
+      coral-server:
+        condition: service_healthy
+    environment:
+      CORAL_BASE_URL: "http://coral-server:5555"
+      CORAL_AUTH_KEY: "localdev"
+      HERMES_HOME: "/opt/hermes/profiles"
+      HERMES_WRITE_SAFE_ROOT: "${HERMES_WRITE_SAFE_ROOT:-/opt/hermes/safe}"
+      # Pass-through for the host paths the agent needs read/write access to.
+      PROJECT_ROOT: "/opt/project"
+      TZ: "Asia/Seoul"
+    volumes:
+      # Host project code and Hermes profiles, mounted read-only where possible.
+      - "${PROJECT_ROOT}:/opt/project:ro"
+      - "${HERMES_HOME}:/opt/hermes/profiles:ro"
+      # Writes are confined to this safe root so the agent cannot touch the host.
+      - "${HERMES_WRITE_SAFE_ROOT:-/opt/hermes/safe}:/opt/hermes/safe"
+    networks:
+      - agentradio-net
+    restart: always
+    # Actual agent launch is injected by the operator (profile-specific command).
+    # Keep the container alive for manual attach / debugging.
+    command: ["tail", "-f", "/dev/null"]
+
+networks:
+  agentradio-net:
+    driver: bridge

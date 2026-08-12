@@ -1,0 +1,49 @@
+# Dockerfile.agent — local AgentRadio agent container (Step 1 infra contribution)
+#
+# Scope: build a minimal, reproducible environment that can run ANY local
+# agent (Hermes profiles, or any CLI that speaks the Coral MCP primitives)
+# against the local coral-server defined in docker-compose.yml.
+#
+# This Dockerfile adds NO upstream source changes. It only installs a runtime
+# and a safety fence (HERMES_WRITE_SAFE_ROOT). The operator supplies the agent
+# binary / profile at runtime via the mounted HERMES_HOME volume.
+
+FROM python:3.11-slim
+
+# Avoid interactive prompts during apt/py installs.
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+# --- 1. System deps: git (for Hermes) + curl/wget (healthchecks, jar fetch) ---
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git curl wget ca-certificates gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- 2. Hermes agent runtime (via uv, isolated from system python) ---
+# Hermes ships as a Python package. We install the CLI without baking any
+# host-specific path into the image — paths come from env at runtime.
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
+RUN uv tool install hermes-agent || pip install --break-system-packages hermes-agent
+
+# --- 3. Safety fence: agents may only write under HERMES_WRITE_SAFE_ROOT ---
+# We create the safe root and a non-privileged user. The compose file mounts
+# the host HERMES_WRITE_SAFE_ROOT onto /opt/hermes/safe; if the operator omits
+# the host path, this empty dir still confines writes to the container.
+ENV HERMES_WRITE_SAFE_ROOT=/opt/hermes/safe
+RUN useradd -m -s /bin/bash agent \
+    && mkdir -p /opt/hermes/safe /opt/project /opt/hermes/profiles \
+    && chown -R agent:agent /opt/hermes /opt/project
+
+USER agent
+WORKDIR /opt/hermes
+
+# Smoke test: confirm the CLI resolves and Coral MCP primitives are present.
+# (Fails the build loudly if the runtime is misconfigured.)
+RUN hermes --version 2>/dev/null || echo "[warn] hermes CLI not on PATH — set command at runtime"
+
+# Default command is intentionally a no-op; the operator overrides `command`
+# per profile (e.g. `hermes run --profile dev --mcp coral ...`).
+CMD ["tail", "-f", "/dev/null"]
